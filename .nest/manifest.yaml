@@ -1,0 +1,7 @@
+id: devops-pack
+name: DevOps & Reliability Pack
+description: Autonomous server log parsing, root cause incident postmortems, dependency CVE vulnerability audits, and OpenAPI spec generation.
+version: 1.0.0
+min_nest_version: 0.1.0
+agents: [log-incident-analyzer, cve-auditor, api-spec-builder]
+workflows: [incident-and-release-audit]

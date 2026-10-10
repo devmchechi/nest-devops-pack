@@ -1,0 +1,30 @@
+id: incident-and-release-audit
+name: Incident and Release Audit
+steps:
+  - id: incident_analysis
+    agent: log-incident-analyzer
+    on_failure: continue
+    input: >-
+      Inspect the production server logs, crash dumps, and stack traces in ./logs/ in your working directory.
+      Reconstruct the exact failure timeline, identify trigger anomalies, and establish the primary root cause.
+      Save the postmortem to ./postmortems/ and include the incident summary in your reply. If ./logs/ is empty,
+      reply with one line stating no log files were found.
+  - id: security_audit
+    agent: cve-auditor
+    on_failure: continue
+    input: >-
+      Scan package manifest files and lockfiles in ./manifests/ in your working directory for security vulnerabilities.
+      Classify findings by CVSS severity, note exploitability, and outline remediation version bumps. Include the
+      vulnerability scorecard in your reply.
+  - id: api_validation
+    agent: api-spec-builder
+    input: >-
+      Audit backend endpoint route files in ./routes/ and schemas in ./schemas/ in your working directory to generate
+      or validate the OpenAPI 3.1 specification. Combine the reliability, security, and interface status below into
+      an executive engineering release health report:
+
+      Incident Root Cause Analysis:
+      {{incident_analysis.output}}
+
+      Dependency Security Audit:
+      {{security_audit.output}}
